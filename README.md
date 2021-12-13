@@ -29,7 +29,39 @@
 
 ## Usage
 
+```ts
+import * as swarmCid from '@ethersphere/swarm-cid-js'
+
+const someReference = 'ca6357a08e317d15ec560fef34e4c45f8f19f01c372aa70f1da72bfa7f1a4338'
+
+const manifestCid = swarmCid.encodeReference(someReference, swarmCid.ReferenceType.MANIFEST)
+// OR: swarmCid.encodeManifestReference(someReference)
+
+console.log(manifestCid.toString())
+// Prints base32 encoded CID string: bah5acgzazjrvpieogf6rl3cwb7xtjzgel6hrt4a4g4vkody5u4v7u7y2im4a
+
+swarmCid.decodeFeedCid(manifestCid) // This will throw Error as it expects Manifest CID
+console.log(swarmCid.decodeCid(manifestCid))
+// Prints:
+// {
+//   type: 'manifest'
+//   reference: 'ca6357a08e317d15ec560fef34e4c45f8f19f01c372aa70f1da72bfa7f1a4338'
+// }
+```
+
 ## API
+
+There are generic functions, that encode/decode which does not throw when unexpected codec.
+
+ - `decodeCid`
+ - `encodeReference`
+
+And there are type-related functions that check for correct codecs:
+
+ - `encodeFeedReference` / `decodeFeedCid`
+ - `encodeManifestReference` / `decodeManifestCid`
+
+Encoding operations returns `CID` class! So if you want base32 encoded string then you have to call `cid.toString()`
 
 ## Contribute
 
