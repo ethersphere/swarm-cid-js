@@ -44,8 +44,8 @@ jobs:
         env:
           CI: true
 
-      - name: Dependency check
-        run: npm run depcheck
+#      - name: Dependency check
+#        run: npm run depcheck
 
       - name: Check typings
         run: npm run check:types
