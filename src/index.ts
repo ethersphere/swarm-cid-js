@@ -20,7 +20,7 @@ export enum ReferenceType {
  */
 const CODEC_TYPE_MAPPING: Record<number, ReferenceType> = {
   [SWARM_FEED_CODEC]: ReferenceType.FEED,
-  [SWARM_MANIFEST_CODEC]: ReferenceType.MANIFEST
+  [SWARM_MANIFEST_CODEC]: ReferenceType.MANIFEST,
 }
 
 export interface DecodeResult {
@@ -41,7 +41,7 @@ export interface DecodeResult {
  * @param ref
  * @param type
  */
-export function encodeReference (ref: string | Reference, type: ReferenceType): CID {
+export function encodeReference(ref: string | Reference, type: ReferenceType): CID {
   switch (type) {
     case ReferenceType.FEED:
       return _encodeReference(ref, SWARM_FEED_CODEC)
@@ -56,7 +56,7 @@ export function encodeReference (ref: string | Reference, type: ReferenceType): 
  * Encode Swarm hex-encoded Reference into CID and sets Feed codec.
  * @param ref
  */
-export function encodeFeedReference (ref: string | Reference): CID {
+export function encodeFeedReference(ref: string | Reference): CID {
   return _encodeReference(ref, SWARM_FEED_CODEC)
 }
 
@@ -64,7 +64,7 @@ export function encodeFeedReference (ref: string | Reference): CID {
  * Encode Swarm hex-encoded Reference into CID and sets Manifest codec.
  * @param ref
  */
-export function encodeManifestReference (ref: string | Reference): CID {
+export function encodeManifestReference(ref: string | Reference): CID {
   return _encodeReference(ref, SWARM_MANIFEST_CODEC)
 }
 
@@ -74,7 +74,7 @@ export function encodeManifestReference (ref: string | Reference): CID {
  * @param cid
  * @throws Error if the decoded codec did not matched Swarm Feed codec
  */
-export function decodeFeedCid (cid: CID | string): Reference {
+export function decodeFeedCid(cid: CID | string): Reference {
   const result = _decodeReference(cid)
 
   if (result.type !== ReferenceType.FEED) {
@@ -90,7 +90,7 @@ export function decodeFeedCid (cid: CID | string): Reference {
  * @param cid
  * @throws Error if the decoded codec did not matched Swarm Manifest codec
  */
-export function decodeManifestCid (cid: CID | string): Reference {
+export function decodeManifestCid(cid: CID | string): Reference {
   const result = _decodeReference(cid)
 
   if (result.type !== ReferenceType.MANIFEST) {
@@ -107,25 +107,26 @@ export function decodeManifestCid (cid: CID | string): Reference {
  * @see DecodeResult
  * @param cid
  */
-export function decodeCid (cid: CID | string): DecodeResult {
+export function decodeCid(cid: CID | string): DecodeResult {
   return _decodeReference(cid)
 }
 
-function _decodeReference (cid: CID | string): DecodeResult {
+function _decodeReference(cid: CID | string): DecodeResult {
   if (typeof cid === 'string') {
     cid = CID.parse(cid)
   }
 
   return {
     reference: bytesToHex(cid.multihash.digest),
-    type: CODEC_TYPE_MAPPING[cid.code]
+    type: CODEC_TYPE_MAPPING[cid.code],
   }
 }
 
-function _encodeReference (ref: string | Reference, codec: number): CID {
+function _encodeReference(ref: string | Reference, codec: number): CID {
   assertReference(ref)
 
   const hashBytes = hexToBytes(ref)
+
   return CID.createV1(codec, createMultihashDigest(KECCAK_256_CODEC, hashBytes))
 }
 
@@ -135,9 +136,12 @@ type FlavoredType<Type, Name> = Type & { __tag__?: Name }
  * Nominal type to represent hex strings WITHOUT '0x' prefix.
  * For example for 32 bytes hex representation you have to use 64 length.
  */
-type HexString<Length extends number = number> = FlavoredType<string & {
-  readonly length: Length
-}, 'HexString'>
+type HexString<Length extends number = number> = FlavoredType<
+  string & {
+    readonly length: Length
+  },
+  'HexString'
+>
 
 interface Bytes<Length extends number> extends Uint8Array {
   readonly length: Length
@@ -148,8 +152,8 @@ interface Bytes<Length extends number> extends Uint8Array {
  *
  * @param hex string input without 0x prefix!
  */
-function hexToBytes<Length extends number, LengthHex extends number = number> (
-  hex: HexString<LengthHex>
+function hexToBytes<Length extends number, LengthHex extends number = number>(
+  hex: HexString<LengthHex>,
 ): Bytes<Length> {
   assertHexString(hex)
 
@@ -168,7 +172,7 @@ function hexToBytes<Length extends number, LengthHex extends number = number> (
  * @param bytes   The input array
  * @param len     The length of the non prefixed HexString
  */
-function bytesToHex<Length extends number = number> (bytes: Uint8Array, len?: Length): HexString<Length> {
+function bytesToHex<Length extends number = number>(bytes: Uint8Array, len?: Length): HexString<Length> {
   const hexByte = (n: number) => n.toString(16).padStart(2, '0')
   const hex = Array.from(bytes, hexByte).join('') as HexString<Length>
 
@@ -189,7 +193,7 @@ function bytesToHex<Length extends number = number> (bytes: Uint8Array, len?: Le
  * @param s string input
  * @param len expected length of the HexString
  */
-function isHexString<Length extends number = number> (s: unknown, len?: number): s is HexString<Length> {
+function isHexString<Length extends number = number>(s: unknown, len?: number): s is HexString<Length> {
   return typeof s === 'string' && /^[0-9a-f]+$/i.test(s) && (!len || s.length === len)
 }
 
@@ -203,10 +207,10 @@ function isHexString<Length extends number = number> (s: unknown, len?: number):
  * @param name optional name for the asserted value
  * @returns HexString or throws error
  */
-function assertHexString<Length extends number = number> (
+function assertHexString<Length extends number = number>(
   s: unknown,
   len?: number,
-  name = 'value'
+  name = 'value',
 ): asserts s is HexString<Length> {
   if (!isHexString(s, len)) {
     // Don't display length error if no length specified in order not to confuse user
@@ -215,10 +219,12 @@ function assertHexString<Length extends number = number> (
   }
 }
 
-function assertReference (ref: unknown): asserts ref is Reference {
+function assertReference(ref: unknown): asserts ref is Reference {
   assertHexString(ref)
 
   if (ref.length !== REFERENCE_HEX_LENGTH) {
-    throw new TypeError(`Reference does not have expected length 64 characters. Encrypted references are not supported.`)
+    throw new TypeError(
+      `Reference does not have expected length 64 characters. Encrypted references are not supported.`,
+    )
   }
 }

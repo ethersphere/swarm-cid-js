@@ -7,7 +7,7 @@ const testFeedCid = 'bah5qcgzazjrvpieogf6rl3cwb7xtjzgel6hrt4a4g4vkody5u4v7u7y2im
 const cidV1WithDagPB = 'bafybeiekkklkqtypmqav6ytqjbdqucxfwuk5cgige4245d2qhkccuyfnly'
 const cidV1WithDagPB_reference = '8a5296a84f0f64015f627048470a0ae5b515d119062735ce8f503a842a60ad5e'
 
-describe('Encoding/decoding', function () {
+describe('Encoding/decoding', () => {
   it('should encode and then decode to same reference', async () => {
     const cid = swarmCid.encodeReference(testReference, swarmCid.ReferenceType.MANIFEST)
 
@@ -16,7 +16,7 @@ describe('Encoding/decoding', function () {
 
     expect(swarmCid.decodeCid(cid)).toMatchObject({
       reference: testReference,
-      type: swarmCid.ReferenceType.MANIFEST
+      type: swarmCid.ReferenceType.MANIFEST,
     })
   })
   it('should encode and then decode with base32 string to same reference', async () => {
@@ -25,7 +25,7 @@ describe('Encoding/decoding', function () {
 
     expect(swarmCid.decodeCid(cidString)).toMatchObject({
       reference: testReference,
-      type: swarmCid.ReferenceType.FEED
+      type: swarmCid.ReferenceType.FEED,
     })
   })
 
@@ -38,11 +38,10 @@ describe('Encoding/decoding', function () {
 
     expect(swarmCid.decodeCid(cidString)).toMatchObject({
       reference: testReference,
-      type: swarmCid.ReferenceType.MANIFEST
+      type: swarmCid.ReferenceType.MANIFEST,
     })
     expect(swarmCid.decodeManifestCid(cidString)).toEqual(testReference)
     expect(() => swarmCid.decodeFeedCid(cidString)).toThrow(Error)
-
   })
 
   it('should encode feed and then decode with base32 string to same reference', async () => {
@@ -54,19 +53,18 @@ describe('Encoding/decoding', function () {
 
     expect(swarmCid.decodeCid(cidString)).toMatchObject({
       reference: testReference,
-      type: swarmCid.ReferenceType.FEED
+      type: swarmCid.ReferenceType.FEED,
     })
     expect(swarmCid.decodeFeedCid(cidString)).toEqual(testReference)
     expect(() => swarmCid.decodeManifestCid(cidString)).toThrow(Error)
-
   })
 })
 
-describe('Error handling', function () {
+describe('Error handling', () => {
   it('should not throw for incompatible codec when using generic decoding ', async () => {
     expect(swarmCid.decodeCid(cidV1WithDagPB)).toMatchObject({
       reference: cidV1WithDagPB_reference,
-      type: undefined
+      type: undefined,
     })
   })
 
