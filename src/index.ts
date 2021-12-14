@@ -176,7 +176,6 @@ function bytesToHex<Length extends number = number>(bytes: Uint8Array, len?: Len
   const hexByte = (n: number) => n.toString(16).padStart(2, '0')
   const hex = Array.from(bytes, hexByte).join('') as HexString<Length>
 
-  // TODO: Make Length mandatory: https://github.com/ethersphere/bee-js/issues/208
   if (len && hex.length !== len) {
     throw new TypeError(`Resulting HexString does not have expected length ${len}: ${hex}`)
   }
@@ -188,8 +187,6 @@ function bytesToHex<Length extends number = number>(bytes: Uint8Array, len?: Len
  * Type guard for HexStrings.
  * Requires no 0x prefix!
  *
- * TODO: Make Length mandatory: https://github.com/ethersphere/bee-js/issues/208
- *
  * @param s string input
  * @param len expected length of the HexString
  */
@@ -199,8 +196,6 @@ function isHexString<Length extends number = number>(s: unknown, len?: number): 
 
 /**
  * Verifies if the provided input is a HexString.
- *
- * TODO: Make Length mandatory: https://github.com/ethersphere/bee-js/issues/208
  *
  * @param s string input
  * @param len expected length of the HexString
