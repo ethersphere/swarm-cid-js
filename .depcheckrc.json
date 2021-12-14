@@ -1,0 +1,12 @@
+{
+  "ignores": [
+    "@babel/core",
+    "@babel/preset-env",
+    "@babel/preset-typescript",
+    "@commitlint/cli",
+    "@commitlint/config-conventional",
+    "@types/jest",
+    "husky",
+    "ts-node"
+  ]
+}
