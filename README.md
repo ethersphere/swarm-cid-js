@@ -24,7 +24,7 @@
 ## Install
 
 ```sh
-> npm install @ethersphere/swarm-cid-js --save
+> npm install @ethersphere/swarm-cid --save
 ```
 
 ## Usage
