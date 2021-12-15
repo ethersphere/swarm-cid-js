@@ -72,4 +72,9 @@ describe('Error handling', () => {
     expect(() => swarmCid.decodeFeedCid(cidV1WithDagPB)).toThrow(Error)
     expect(() => swarmCid.decodeManifestCid(cidV1WithDagPB)).toThrow(Error)
   })
+
+  it('should throw when invalid cid', async () => {
+    expect(() => swarmCid.decodeCid('some invalid cid')).toThrow(Error)
+    expect(() => swarmCid.decodeCid('someInvalidCid')).toThrow(Error)
+  })
 })
