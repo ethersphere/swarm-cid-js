@@ -30,7 +30,7 @@
 ## Usage
 
 ```ts
-import * as swarmCid from '@ethersphere/swarm-cid-js'
+import * as swarmCid from '@ethersphere/swarm-cid'
 
 const someReference = 'ca6357a08e317d15ec560fef34e4c45f8f19f01c372aa70f1da72bfa7f1a4338'
 
