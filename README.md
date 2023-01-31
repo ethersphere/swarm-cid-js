@@ -73,9 +73,6 @@ There are some ways you can make this module better:
 
 ## Maintainers
 
-- [auhau](https://github.com/auhau)
-- [vojtechsimetka](https://github.com/vojtechsimetka)
-
 ## License
 
 [BSD-3-Clause](./LICENSE)
